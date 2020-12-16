@@ -33,6 +33,9 @@ public class S3ApplicationController {
     public ResponseEntity<UploadFileResponseDto> uploadFileInS3(
             final @Valid @RequestBody UploadFileRequestDto uploadFileRequestDto)
             throws S3ApplicationException, S3ApplicationRuntimeException {
+
+        log.info("received a request to upload file in s3 with bucket name={}", uploadFileRequestDto.getBucketName());
+
         UploadFileResponseBo uploadFileResponseBo = this.awss3Service.uploadFileToS3Bucket(
                 UploadFileRequestBo.builder()
                         .bucketName(uploadFileRequestDto.getBucketName())

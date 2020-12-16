@@ -15,6 +15,7 @@ import java.util.Objects;
 import static com.aws.simplestorageservice.constants.ApplicationErrorConstants.INTERNAL_SERVER_ERROR;
 import static com.aws.simplestorageservice.constants.ApplicationErrorConstants.INTERNAL_SERVER_ERROR_RUNTIME;
 
+// Way to handle custom exceptions in spring boot application
 @ControllerAdvice
 public class GenericApplicationHandler {
 
