@@ -76,9 +76,9 @@ public class AWSS3ServiceImpl implements AWSS3Service {
             log.info("Starting to upload file in S3");
             PutObjectResult putObjectResult = this.amazonS3.putObject(
                     new PutObjectRequest(uploadFileRequestBo.getBucketName(), fileName, file));
-            log.info("File with name={} and content Type={} is successfully uploaded in s3", fileName,
-                    putObjectResult.getMetadata().getContentType());
-
+            log.info("File with name={} and version id={} is successfully uploaded in s3", fileName,
+                     putObjectResult.getVersionId());
+            file.delete();
             // removing the file created in server
             return UploadFileResponseBo.builder()
                     .message("File uploaded into S3 successfully with name = " +

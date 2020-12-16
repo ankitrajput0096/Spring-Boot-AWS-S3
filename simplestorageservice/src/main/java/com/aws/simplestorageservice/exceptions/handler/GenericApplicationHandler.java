@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +18,7 @@ import static com.aws.simplestorageservice.constants.ApplicationErrorConstants.I
 
 // Way to handle custom exceptions in spring boot application
 @ControllerAdvice
-public class GenericApplicationHandler {
+public class GenericApplicationHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Controller advice method to handle S3ApplicationException exceptions.

@@ -1,6 +1,5 @@
 package com.aws.simplestorageservice.controller;
 
-import com.aws.simplestorageservice.data.UploadFileRequestDto;
 import com.aws.simplestorageservice.data.UploadFileResponseDto;
 import com.aws.simplestorageservice.exceptions.S3ApplicationException;
 import com.aws.simplestorageservice.exceptions.S3ApplicationRuntimeException;
@@ -12,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -28,18 +25,18 @@ public class S3ApplicationController {
     private AWSS3Service awss3Service;
 
     @PostMapping(path = "/upload/file",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UploadFileResponseDto> uploadFileInS3(
-            final @Valid @RequestBody UploadFileRequestDto uploadFileRequestDto)
+            @Valid @RequestParam(value = "file") final MultipartFile fileToUpload,
+            @Valid @RequestHeader(value = "bucket_name") final String bucketName)
             throws S3ApplicationException, S3ApplicationRuntimeException {
 
-        log.info("received a request to upload file in s3 with bucket name={}", uploadFileRequestDto.getBucketName());
+        log.info("received a request to upload file in s3 with bucket name={}", bucketName);
 
         UploadFileResponseBo uploadFileResponseBo = this.awss3Service.uploadFileToS3Bucket(
                 UploadFileRequestBo.builder()
-                        .bucketName(uploadFileRequestDto.getBucketName())
-                        .multipartFile(uploadFileRequestDto.getMultipartFile())
+                        .bucketName(bucketName)
+                        .multipartFile(fileToUpload)
                         .build()
         );
         return new ResponseEntity<>(UploadFileResponseDto.builder()
