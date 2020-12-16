@@ -1,8 +1,12 @@
 package com.aws.simplestorageservice.controller;
 
+import com.aws.simplestorageservice.data.DeleteFileRequestDto;
+import com.aws.simplestorageservice.data.DeleteFileResponseDto;
 import com.aws.simplestorageservice.data.UploadFileResponseDto;
 import com.aws.simplestorageservice.exceptions.S3ApplicationException;
 import com.aws.simplestorageservice.exceptions.S3ApplicationRuntimeException;
+import com.aws.simplestorageservice.model.DeleteFileRequestBo;
+import com.aws.simplestorageservice.model.DeleteFileResponseBo;
 import com.aws.simplestorageservice.model.UploadFileRequestBo;
 import com.aws.simplestorageservice.model.UploadFileResponseBo;
 import com.aws.simplestorageservice.service.AWSS3Service;
@@ -43,5 +47,23 @@ public class S3ApplicationController {
                 .message(uploadFileResponseBo.getMessage())
                 .build(), HttpStatus.CREATED);
     }
+
+    @DeleteMapping(path = "/delete/file",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DeleteFileResponseDto> deleteFileInS3(
+            @Valid @RequestBody final DeleteFileRequestDto deleteFileRequestDto)
+            throws S3ApplicationException, S3ApplicationRuntimeException {
+
+        log.info("received a request to delete a file in s3 with bucket name={} and filename={}", deleteFileRequestDto.getBucketName(), deleteFileRequestDto.getFileName());
+        DeleteFileResponseBo deleteFileResponseBo = this.awss3Service.deleteFileInS3Bucket(DeleteFileRequestBo.builder()
+                .fileName(deleteFileRequestDto.getFileName())
+                .bucketName(deleteFileRequestDto.getBucketName())
+                .build());
+        return ResponseEntity.ok(DeleteFileResponseDto.builder()
+                .message(deleteFileResponseBo.getMessage())
+                .build());
+    }
+
 
 }
