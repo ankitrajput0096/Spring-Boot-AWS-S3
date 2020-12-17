@@ -37,7 +37,7 @@ These instructions will get you a copy of the project up and running on your loc
     #### Ubuntu:
     https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
-###NOTE
+### NOTE
 Please create a S3 bucket first and then update the details of the bucket in application.properties of
  the spring boot application. Properties you need to add are `region`, `accesskey` and `secretKey`.
 
