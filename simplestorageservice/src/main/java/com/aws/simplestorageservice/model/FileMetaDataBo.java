@@ -12,7 +12,6 @@ import java.util.Date;
 @Builder
 public class FileMetaDataBo {
     private String bucketName;
-    private String fileOwner;
     private String fileKey;
     private Date lastModifiedDate;
     private Long fileSize;

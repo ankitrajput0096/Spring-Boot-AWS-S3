@@ -21,9 +21,6 @@ public class FileMetaDataDto {
     @JsonProperty("bucket_name")
     private String bucketName;
 
-    @JsonProperty("file_owner")
-    private String fileOwner;
-
     @JsonProperty("file_key")
     private String fileKey;
 

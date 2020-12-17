@@ -124,7 +124,7 @@ public class AWSS3ServiceImpl implements AWSS3Service {
                     deleteFileRequestBo.getBucketName());
             return DeleteFileResponseBo.builder()
                     .message("successfully delete file=" + deleteFileRequestBo.getFileName()
-                            + " in bucket={}" + deleteFileRequestBo.getBucketName())
+                            + " in bucket=" + deleteFileRequestBo.getBucketName())
                     .build();
         } catch (AmazonServiceException ex) {
             log.error("An error occurred while delete file={} in s3 bucket={}",
@@ -160,7 +160,6 @@ public class AWSS3ServiceImpl implements AWSS3Service {
                     FileMetaDataBo.builder()
                             .bucketName(e.getBucketName())
                             .fileKey(e.getKey())
-                            .fileOwner(e.getOwner().getDisplayName())
                             .fileSize(e.getSize())
                             .lastModifiedDate(e.getLastModified())
                             .build()
@@ -232,7 +231,6 @@ public class AWSS3ServiceImpl implements AWSS3Service {
                     new GetObjectMetadataRequest(bucketName, fileName));
             return FileMetaDataBo.builder()
                     .bucketName(bucketName)
-                    .fileKey(objectMetadata.getSSECustomerKeyMd5())
                     .fileSize(objectMetadata.getContentLength())
                     .lastModifiedDate(objectMetadata.getLastModified())
                     .build();

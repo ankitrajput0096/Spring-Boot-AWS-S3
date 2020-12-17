@@ -25,9 +25,7 @@ public class S3ApplicationController {
     @Autowired
     private AWSS3Service awss3Service;
 
-    @GetMapping(path = "/list/files",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/list/files")
     public ResponseEntity<List<FileMetaDataDto>> listOfFilesInS3(
             @Valid @RequestHeader(value = "bucket_name") final String bucketName)
             throws S3ApplicationException, S3ApplicationRuntimeException {
@@ -36,7 +34,6 @@ public class S3ApplicationController {
         return ResponseEntity.ok(filesMetaData.stream()
                 .map(e -> FileMetaDataDto.builder()
                         .fileKey(e.getFileKey())
-                        .fileOwner(e.getFileOwner())
                         .fileSize(e.getFileSize())
                         .bucketName(e.getBucketName())
                         .lastModifiedDate(e.getLastModifiedDate())
@@ -44,9 +41,7 @@ public class S3ApplicationController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping(path = "/file/metadata",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/file/metadata")
     public ResponseEntity<FileMetaDataDto> getFileMetadata(
             @Valid @RequestHeader(value = "bucket_name") final String bucketName,
             @Valid @RequestHeader(value = "file_name") final String fileName)
@@ -55,10 +50,8 @@ public class S3ApplicationController {
         FileMetaDataBo fileMetaDataBo = this.awss3Service.getFileMeta(bucketName, fileName);
         return new ResponseEntity<>(FileMetaDataDto.builder()
                 .bucketName(fileMetaDataBo.getBucketName())
-                .fileKey(fileMetaDataBo.getFileKey())
                 .fileSize(fileMetaDataBo.getFileSize())
                 .lastModifiedDate(fileMetaDataBo.getLastModifiedDate())
-                .fileOwner(fileMetaDataBo.getFileOwner())
                 .build(), HttpStatus.FOUND);
     }
 
